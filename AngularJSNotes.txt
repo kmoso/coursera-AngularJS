@@ -1,0 +1,2 @@
+cd C:\Git\coursera-AngularJS\resolved_assignments\
+browser-sync start --server --directory --files "**/*"
