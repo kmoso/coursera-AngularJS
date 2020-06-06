@@ -31,23 +31,26 @@ NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController(MenuSearchService) {
   var narrowObj = this;
   narrowObj.found = [];
+  narrowObj.notFound = false;
   
   narrowObj.getMatchedMenuItems = function (searchTerm) {
-    var completeList;
+    var completeList = [];
     var promise = MenuSearchService.getMenuCategories();
-    narrowObj.notFound = false;
 
 //    console.log('Entering narrowObj.found');
+//    console.log(narrowObj.found);
 
     promise.then(function (response) {
       completeList = response.data;
       if (searchTerm === undefined) {
         console.log("Getting the complete list");
-        narrowObj.found = completeList;
+        narrowObj.found = completeList.menu_items;
       }
       else {
         console.log("Searching for " + searchTerm);
+        console.log(narrowObj.found);
         narrowObj.found = MenuSearchService.findString(completeList.menu_items, searchTerm);
+        console.log(narrowObj.found);
         if (narrowObj.found.length==0) {
           narrowObj.notFound = true;
         }
@@ -55,7 +58,8 @@ function NarrowItDownController(MenuSearchService) {
             narrowObj.notFound = false;
         }
       }
-      console.log("Not Found ", narrowObj.notFound);
+//      console.log("Not Found ", narrowObj.notFound);
+//      console.log(narrowObj.found);
     })
     .catch(function (error) {
       console.log("Something went terribly wrong =P");
@@ -87,7 +91,7 @@ function MenuSearchService($http, ApiBasePath) {
   };
 
   service.findString = function (arrayList, searchString) {
-//    var newList = [];
+    found = [];
     
     angular.forEach(arrayList, function(value, key){
         var dish = angular.lowercase(value.description);
