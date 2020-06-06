@@ -1,0 +1,5 @@
+<table>
+    <tr ng-repeat="kmItem in narrowObj.found">
+        <td>{{ kmItem.short_name }}</td><td>{{ kmItem.name }}</td><td>{{kmItem.description}}</td><td><button ng-click="narrowObj.onRemove({index: $index});">Don't want this one!</button></td>
+    </tr>
+</table>
