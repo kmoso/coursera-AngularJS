@@ -33,7 +33,9 @@
         <h2>Opciones</h2>
         <table id="k01">
           <tr ng-repeat="item in itemToBuy.toBuyList">
-            <td><img src={{item.image}} alt={{item.image_alt}} width="200" height="200"></td><td>{{item.quantity}} {{item.name}}</td><td><button ng-click="itemToBuy.addItem($index)" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span></button></td>
+            <td><img src={{item.image}} alt={{item.image_alt}} width="200" height="200"></td>
+            <td>{{item.quantity}}</td><td>{{item.name}}</td>
+            <td><button ng-click="itemToBuy.addItem($index)" ><span class="glyphicon glyphicon-plus"></span></button></td>
           </tr>
         </table>
         <div ng-if="itemToBuy.toBuyList.length===0" class="emptyMessage">Tienes mucha hambre!</div>
@@ -43,7 +45,9 @@
         <h2>Incluidos en la orden</h2>
         <table id="k01">
           <tr ng-repeat="item in itemBought.itemsBought">
-            <td><img src={{item.image}} alt={{item.image_alt}} width="200" height="200"></td><td>{{item.quantity}} {{item.name}}</td>
+            <td><img src={{item.image}} alt={{item.image_alt}} width="200" height="200"></td>
+            <td>{{item.quantity}}</td><td>{{item.name}}</td>
+            <td><button ng-click="itemBought.removeItem($index)" ><span class="glyphicon glyphicon-minus"></span></button></td>
           </tr>
         </table>
       <div ng-if="itemBought.itemsBought.length===0" class="emptyMessage">Aún no te decides?</div>

@@ -28,8 +28,6 @@ var gtoBuyList = [
   }
 ];
 
-var alreadyBoughtList = [];
-
 angular.module('LaYecaShoppingListCheckOff', [])
 .controller('ToBuyController', ToBuyController)
 .controller('AlreadyBoughtController', AlreadyBoughtController)
@@ -40,13 +38,16 @@ ToBuyController.$inject = ['LaYecaShoppingListCheckOffService'];
 // ** Controller As syntax
 function ToBuyController(LaYecaShoppingListCheckOffService) {
   var itemToBuy = this;
-  itemToBuy.toBuyList = LaYecaShoppingListCheckOffService.getListItems();
-  // console.log("In TOBUYCONTROLLER ", itemToBuy.toBuyList);
+
+  // This will have the complete list of products
+  itemToBuy.toBuyList = LaYecaShoppingListCheckOffService.getToBuyList();
 
   itemToBuy.addItem = function (itemIndex) {
-    LaYecaShoppingListCheckOffService.addItem(itemToBuy.toBuyList[itemIndex].name, itemToBuy.toBuyList[itemIndex].quantity, itemToBuy.toBuyList[itemIndex].image, itemIndex);
-    LaYecaShoppingListCheckOffService.removeItem(itemIndex);
-    // console.log("Adding/Removing", LaYecaShoppingListCheckOffService.getItems());
+    console.log("Checking addItem",itemToBuy.toBuyList[itemIndex].name);
+    LaYecaShoppingListCheckOffService.addItemBought(itemToBuy.toBuyList[itemIndex].name, itemToBuy.toBuyList[itemIndex].quantity, itemToBuy.toBuyList[itemIndex].image, itemIndex);
+    //itemsBought is not defined here
+    //console.log("itemsBought after:",itemsBought);
+    LaYecaShoppingListCheckOffService.removeItemToBuy(itemIndex);
   }
 }
 
@@ -54,45 +55,70 @@ AlreadyBoughtController.$inject = ['LaYecaShoppingListCheckOffService'];
 // ** Controller As syntax
 function AlreadyBoughtController(LaYecaShoppingListCheckOffService) {
   var itemBought = this;
-  itemBought.itemsBought = [];
-  // console.log("In ALREADYBOUGHTCONTROLLER ", itemBought);
 
-  itemBought.itemsBought = LaYecaShoppingListCheckOffService.getItems();
-  // console.log("Completed list", itemBought);
+  // This will have no elements when loading the page
+  itemBought.itemsBought = LaYecaShoppingListCheckOffService.getItemsBought();
+
+  itemBought.removeItem = function (itemIndex) {
+    console.log("Checking removeItem",itemBought.itemsBought[itemIndex].name);
+    LaYecaShoppingListCheckOffService.addItemToBuy(itemBought.itemsBought[itemIndex].name, itemBought.itemsBought[itemIndex].quantity, itemBought.itemsBought[itemIndex].image, itemIndex);
+    //toBuyList is not defined here
+    //console.log("toBuyList after:",toBuyList);
+    LaYecaShoppingListCheckOffService.removeItemBought(itemIndex);
+  }
 }
 
 function LaYecaShoppingListCheckOffService() {
   var firstService = this;
 
   // List of shopping items
-  var toBuyList = gtoBuyList;
+  var s_toBuyList = gtoBuyList;
 
   // List of shopping items bought
-  var itemsBought = [];
+  var s_itemsBought = [];
 
-  firstService.addItem = function (iName, iQuantity, iImage, iIndex) {
-    var itemBought = {
+  firstService.addItemBought = function (iName, iQuantity, iImage, iIndex) {
+    var l_itemBought = {
       name: iName,
       quantity: iQuantity,
       image: iImage
     };
-    itemsBought.push(itemBought);
-    // console.log("Items bought",itemsBought);
-    // console.log("Items in list",toBuyList);
+    s_itemsBought.push(l_itemBought);
+    //console.log("Items bought",s_itemsBought);
+    //console.log("Items in list",s_toBuyList);
   };
   
-  firstService.getListItems = function () {
-    return toBuyList;
+  firstService.addItemToBuy = function (iName, iQuantity, iImage, iIndex) {
+    var l_toBuyList = {
+      name: iName,
+      quantity: iQuantity,
+      image: iImage
+    };
+    s_toBuyList.push(l_toBuyList);
+    //console.log("Items in list",s_toBuyList);
+    //console.log("Items bought",s_itemsBought);
+  };
+  
+  firstService.getToBuyList = function () {
+    return s_toBuyList;
   };
 
-  firstService.getItems = function () {
-    return itemsBought;
+  firstService.getItemsBought = function () {
+    return s_itemsBought;
   };
 
-  firstService.removeItem = function (iIndex) {
-    // console.log("Index", iIndex);
-    // console.log("Item", itemsBought);
-    toBuyList.splice(iIndex, 1);
+  firstService.removeItemToBuy = function (iIndex) {
+    //console.log("Index", iIndex);
+    //console.log("s_toBuyList", s_toBuyList);
+    //console.log("s_itemsBought", s_itemsBought);
+    s_toBuyList.splice(iIndex, 1);
+  };
+
+  firstService.removeItemBought = function (iIndex) {
+    console.log("Index", iIndex);
+    console.log("s_toBuyList", s_toBuyList);
+    console.log("s_itemsBought", s_itemsBought);
+    s_itemsBought.splice(iIndex, 1);
   };
 }
 
