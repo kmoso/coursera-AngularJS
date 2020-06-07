@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app='LaYecaShoppingListCheckOff' lang="es">
+<html ng-app="LaYecaShoppingListCheckOff" lang="es">
   <head>
     <title>Selección de productos - La Yeca</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,30 +28,45 @@
   <div class="container">
     <h1>Selección de productos</h1>
     <div class="row">
+    
       <!-- To Buy List -->
       <div ng-controller='ToBuyController as itemToBuy' class="col-md-6">
         <h2>Opciones</h2>
         <table id="k01">
-          <tr ng-repeat="item in itemToBuy.toBuyList">
-            <td><img src={{item.image}} alt={{item.image_alt}} width="200" height="200"></td>
-            <td>{{item.quantity}}</td><td>{{item.name}}</td>
-            <td><button ng-click="itemToBuy.addItem($index)" ><span class="glyphicon glyphicon-plus"></span></button></td>
-          </tr>
+            <tr>
+                <th id="k02">Cantidad</th><th id="k02">Platillo</th><th id="k02">Precio</th><th id="k02">Selecciona</th>
+            </tr>
+            <tr ng-repeat="item in itemToBuy.toBuyList">
+                <td align="center"><input type="text" ng-model="item.quantity" size="1" maxlength="2"></td>
+                <td><a href="{{item.image}}" target="_blank"><img src={{item.image}} alt={{item.image_alt}} width="200" height="200"><br>{{item.name}}</td>
+                <td align="center">$ {{item.price}}</td>
+                <td align="center"><button ng-click="itemToBuy.addItem($index)" ><span class="glyphicon glyphicon-plus"></span></button></td>
+            </tr>
         </table>
         <div ng-if="itemToBuy.toBuyList.length===0" class="emptyMessage">Tienes mucha hambre!</div>
       </div>
+      
       <!-- Already Bought List -->
       <div ng-controller='AlreadyBoughtController as itemBought' class="col-md-6">
         <h2>Incluidos en la orden</h2>
         <table id="k01">
-          <tr ng-repeat="item in itemBought.itemsBought">
-            <td><img src={{item.image}} alt={{item.image_alt}} width="200" height="200"></td>
-            <td>{{item.quantity}}</td><td>{{item.name}}</td>
-            <td><button ng-click="itemBought.removeItem($index)" ><span class="glyphicon glyphicon-minus"></span></button></td>
+            <tr>
+                <th id="k02">Cantidad</th><th id="k02">Platillo</th><th id="k02">Precio</th><th id="k02">Selecciona</th>
+            </tr>
+          <tr ng-repeat="item in itemBought.itemsBought" ng-init="itemBought.grandTotal = itemBought.grandTotal + (item.price *  item.quantity)">
+                <td align="center">{{item.quantity}}</td>
+                <td><a href="{{item.image}}" target="_blank"><img src={{item.image}} alt={{item.image_alt}} width="200" height="200"><br>{{item.name}}</td>
+                <td align="center">$ {{itemBought.grandTotal}}</td>
+                <td align="center"><button ng-click="itemBought.removeItem($index)" ><span class="glyphicon glyphicon-minus"></span></button></td>
           </tr>
         </table>
-      <div ng-if="itemBought.itemsBought.length===0" class="emptyMessage">Aún no te decides?</div>
-    </div>
+        <div ng-if="itemBought.grandTotal>0" class="emptyMessage">
+            Total a pagar $ {{itemBought.grandTotal}}<br>Haz click para proceder con el pago
+            <button ng-click="itemBought.callPaypal(itemBought.grandTotal)"><span class="glyphicon glyphicon-credit-card"></span></button>
+        </div>
+        <div ng-if="itemBought.itemsBought.length===0" class="emptyMessage">Aún no te decides?</div>
+      </div>
+      
   </div>
 
 </body>
