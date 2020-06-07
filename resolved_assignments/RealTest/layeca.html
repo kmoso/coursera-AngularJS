@@ -28,7 +28,6 @@
   <div class="container">
     <h1>Selección de productos</h1>
     <div class="row">
-    
       <!-- To Buy List -->
       <div ng-controller='ToBuyController as itemToBuy' class="col-md-6">
         <h2>Opciones</h2>
@@ -65,9 +64,36 @@
             <button ng-click="itemBought.callPaypal(itemBought.grandTotal)"><span class="glyphicon glyphicon-credit-card"></span></button>
         </div>
         <div ng-if="itemBought.itemsBought.length===0" class="emptyMessage">Aún no te decides?</div>
-      </div>
-      
-  </div>
 
+        <div ng-if="itemBought.payCheckout==true">...</div>
+        <div id="paypal-button-container"></div>
+        <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=MXN" data-sdk-integration-source="button-factory"></script>
+        <script>
+          paypal.Buttons({
+              style: {
+                  shape: 'pill',
+                  color: 'silver',
+                  layout: 'vertical',
+                  label: 'pay',
+                  
+              },
+              createOrder: function(data, actions) {
+                  return actions.order.create({
+                      purchase_units: [{
+                          amount: {
+                              value: '12.57'
+                          }
+                      }]
+                  });
+              },
+              onApprove: function(data, actions) {
+                  return actions.order.capture().then(function(details) {
+                      alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                  });
+              }
+          }).render('#paypal-button-container');
+        </script>
+      </div>      
+  </div>
 </body>
 </html>

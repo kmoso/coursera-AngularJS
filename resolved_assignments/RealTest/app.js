@@ -84,7 +84,8 @@ AlreadyBoughtController.$inject = ['LaYecaShoppingListCheckOffService'];
 function AlreadyBoughtController(LaYecaShoppingListCheckOffService) {
   var itemBought = this;
   
-  itemBought.GrandTotal = 0;
+  itemBought.grandTotal = 0;
+  itemBought.payCheckout = false;
 
   // This will have no elements when loading the page
   itemBought.itemsBought = LaYecaShoppingListCheckOffService.getItemsBought();
@@ -98,6 +99,7 @@ function AlreadyBoughtController(LaYecaShoppingListCheckOffService) {
   
   itemBought.callPaypal = function (paymentAmount) {
     var x = LaYecaShoppingListCheckOffService.callPaypal(paymentAmount);
+    itemBought.payCheckout = true;
   }
 }
 
