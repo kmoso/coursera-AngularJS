@@ -1,0 +1,5 @@
+<div>
+  <a ui-sref="categories.item({ item: item.short_name, category: item.name })" ng-repeat="item in $ctrl.items">{{ item.short_name}} - {{item.name }}<br></a>
+</div>
+
+<ui-view></ui-view>

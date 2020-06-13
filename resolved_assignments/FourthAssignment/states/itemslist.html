@@ -1,0 +1,20 @@
+<div>
+  <div>
+    <h4>{{ itemsCtrl.items.category.name }}</h4>
+    <p ng-if="itemsCtrl.items.category.special_instructions != ''"><b>Special instrucctions:</b> {{ itemsCtrl.items.category.special_instructions }}</p>
+  </div>
+</div>
+<div>
+  <div ng-repeat="item in itemsCtrl.items.menu_items">
+    <h5>{{ item.name }}</h5>
+    <p>{{ item.description }}</p>
+  </div>
+</div>
+
+<!-- <div class="container">
+  <header>
+    <h4>Items</h4>
+  </header>
+  <itemsList itemsX="itemsCtrl.items"></itemsList>
+</div> 
+-->

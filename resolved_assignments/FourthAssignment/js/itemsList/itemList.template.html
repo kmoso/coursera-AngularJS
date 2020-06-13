@@ -1,0 +1,15 @@
+<div>
+  <!-- Kmoso Not Working -->
+  {{items}}
+  {{itemsCtrl.items}} and
+  <a ng-repeat="item in $ctrl.items.menu_items">
+    <div>
+      <h4>{{ itemsCtrl.items.category.name }}</h4>
+      <p ng-if="itemsCtrl.items.category.special_instructions != ''"><b>Special instrucctions:</b> {{ itemsCtrl.items.category.special_instructions }}</p>
+    </div>
+    <h5>{{item.name}}</h5>
+    <p>{{item.description }}<p>
+    Working...
+</div>
+
+<ui-view></ui-view>
